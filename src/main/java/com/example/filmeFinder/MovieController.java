@@ -3,7 +3,7 @@ package com.example.filmeFinder;
 import java.util.List;
 
 import com.example.filmeFinder.data.model.Movie;
-import com.example.filmeFinder.data.repository.MovieRepository;
+import com.example.filmeFinder.data.mongoRepository.MovieRepository;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,18 +39,18 @@ class MovieController {
   // Single item
   
   @GetMapping("/movie/{id}")
-  Movie one(@PathVariable Long id) {
+  Movie one(@PathVariable String id) {
     
     return repository.findById(id)
       .orElseThrow(() -> new MovieNotFoundException(id));
   }
 
   @PutMapping("/movie/{id}")
-  Movie replaceMovie(@RequestBody Movie newMovie, @PathVariable Long id) {
+  Movie replaceMovie(@RequestBody Movie newMovie, @PathVariable String id) {
     
     return repository.findById(id)
       .map(movie -> {
-        movie.setName(newMovie.getName());
+//        movie.setName(newMovie.getName());
         return repository.save(movie);
       })
       .orElseGet(() -> {
@@ -60,7 +60,7 @@ class MovieController {
   }
 
   @DeleteMapping("/movie/{id}")
-  void deleteMovie(@PathVariable Long id) {
+  void deleteMovie(@PathVariable String id) {
     repository.deleteById(id);
   }
 }
